@@ -1,0 +1,23 @@
+groupBy()分组
+groupBy会存在shuffle过程
+this.map(t => (cleanF(t), t)).groupByKey(p)
+走的groupByKey
+
+distinct()去重
+走的这个匹配
+partitioner match {
+      case Some(_) if numPartitions == partitions.length =>
+        mapPartitions(removeDuplicatesInPartition, preservesPartitioning = true)
+      case _ => map(x => (x, null)).reduceByKey((x, _) => x, numPartitions).map(_._1)
+   }
+底层分区用的reduceBykey
+
+
+coalesce和repartition区别
+
+1）coalesce重新分区，可以选择是否进行shuffle过程。由参数shuffle: Boolean = false/true决定。
+2）repartition实际上是调用的coalesce，进行shuffle。源码如下：
+def repartition(numPartitions: Int)(implicit ord: Ordering[T] = null): RDD[T] = withScope {
+    coalesce(numPartitions, shuffle = true)
+}
+3）coalesce一般为缩减分区，如果扩大分区，不使用shuffle是没有意义的，repartition扩大分区执行shuffle。
