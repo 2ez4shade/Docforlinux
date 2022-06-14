@@ -7,3 +7,4 @@ create table xdd
         into 4 buckets
     row format delimited
         fields terminated by "\t"
+--建表
