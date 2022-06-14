@@ -8,3 +8,4 @@ create table xdd
     row format delimited
         fields terminated by "\t"
 --建表
+--xdddddddddddddddd
